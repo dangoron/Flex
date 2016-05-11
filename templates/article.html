@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block meta %}
+<meta name="author" content="{{ article.author.name }}" />
+<meta name="description" content="{{ article.summary|striptags }}" />
+<meta name="keywords" content="{{ article.tags|join(', ') }}">
+{% include "partial/og_article.html" %}
+{% endblock %}
+
+{% block title %} &ndash; {{ article.title|striptags }}{% endblock %}
+
+{% block content %}
+<article>
+  <header>
+    <h1 id="{{ article.slug }}">{{ article.title }}</h1>
+    <p>发布于 {{ article.locale_date }} 
+      &#8226; 分类 <a href="{{ SITEURL }}/{{ article.category.url }}">{{ article.category }}</a>
+      &#8226; <span class="ds-thread-count" data-thread-key="{{ article.slug }}" data-count-type="comments"></span>
+    </p>
+  </header>
+  <div>
+    {{ article.content }}
+  </div>
+  <div class="tag-cloud">
+    <p>
+      {% if article.tags %}
+      {% for tag in article.tags %}
+      <a href="{{ SITEURL }}/{{ tag.url }}">{{ tag }}</a>
+      {% endfor %}
+      {% endif %}
+    </p>
+  </div>
+  {% if ADD_THIS_ID %}
+  <div class="center social-share">
+    <p>Like this article? Share it with your friends!</p>
+    <div class="addthis_native_toolbox"></div>
+    <div class="addthis_sharing_toolbox"></div>
+  </div>
+  {% endif %}
+  <hr/>
+  {% include "partial/disqus.html" %}
+  {% if DUOSHUO_SITENAME %}
+  <!-- 多说js加载开始，一个页面只需要加载一次 -->
+  <div class="ds-thread" data-thread-key="{{ article.slug }}" data-title="{{ article.title }}" ></div>
+  <script type="text/javascript">
+  var duoshuoQuery = {short_name:"{{ DUOSHUO_SITENAME }}"};
+  (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = 'http://static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+  <!-- 多说js加载结束，一个页面只需要加载一次 -->
+  <noscript>
+  Please enable JavaScript to view the comments powered by <a href="http://duoshuo.com/">DuoShuo</a>.
+  </noscript>
+  {% endif %}
+</article>
+{% endblock %}
+
+{% block additional_js %}
+  {% include "partial/jsonld_article.html" %}
+{% endblock %}

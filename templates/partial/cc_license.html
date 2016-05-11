@@ -1,0 +1,9 @@
+<p>
+  &copy; {{ AUTHOR }} {{ COPYRIGHT_YEAR }} - Creative Commons <a rel="license" href="http://creativecommons.org/licenses/{{ CC_LICENSE['slug'] }}/{{ CC_LICENSE['version'] }}/">{{ CC_LICENSE['name'] }} {{ CC_LICENSE['version'] }}</a>
+</p>
+{% include "partial/flex.html" %}
+<p>
+  {% if STATUSCAKE %}
+    {% include "partial/statuscake.html" %}
+  {% endif %}
+</p>
